@@ -15,7 +15,7 @@ public class MainFrame extends JFrame {
 
 	private final JTextField fileNameTextField;
 
-	private final JTextArea console;
+	private static final JTextArea console = new JTextArea();
 
 	private MainFrame() {
 		super("Expert System");
@@ -27,7 +27,6 @@ public class MainFrame extends JFrame {
 		this.add(northPanel, BorderLayout.NORTH);
 
 		JPanel formPanel = generateFormPanel();
-		console = new JTextArea();
 		JPanel consolePanel = generateConsole();
 
 		JPanel centerPanel = new JPanel(new BorderLayout());
@@ -49,13 +48,13 @@ public class MainFrame extends JFrame {
 	}
 
 	private JPanel generateConsole() {
-		this.console.setEditable(false);
-		this.console.setWrapStyleWord(true);
-		this.console.setColumns(Constants.DEFAULT_TEXT_AREA_WIDTH);
-		this.console.setRows(Constants.DEFAULT_TEXT_FIELD_WIDTH);
+		console.setEditable(false);
+		console.setWrapStyleWord(true);
+		console.setColumns(Constants.DEFAULT_TEXT_AREA_WIDTH);
+		console.setRows(Constants.DEFAULT_TEXT_FIELD_WIDTH);
 
 		JPanel panel = new JPanel();
-		panel.add(new JScrollPane(this.console));
+		panel.add(new JScrollPane(console));
 		return panel;
 	}
 
@@ -89,23 +88,18 @@ public class MainFrame extends JFrame {
 			logEvent("ERROR: Fill all the fields!");
 			throw new RuntimeException();
 		}
-		values.forEach(str -> {
-			if ("".equals(str.trim())) {
-				logEvent("ERROR: Some field is empty");
-				throw new RuntimeException();
-			}
-		});
 		logEvent("Validation complete.");
 		generateJessFile(values);
 	}
 
 	private void generateJessFile(Collection<String> values) {
+		// TODO
 		logEvent("Jess file generated.");
 	}
 
-	private void logEvent(String text) {
-		this.console.append(text);
-		this.console.append("\n");
+	public static void logEvent(String text) {
+		console.append(text);
+		console.append("\n");
 	}
 
 	private class SubmitButtonAction implements ActionListener {
