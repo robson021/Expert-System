@@ -15,6 +15,8 @@ public class MainFrame extends JFrame {
 
 	private final JTextField fileNameTextField;
 
+	private final JTextArea console;
+
 	private MainFrame() {
 		super("Expert System");
 		this.setLayout(new BorderLayout());
@@ -25,6 +27,7 @@ public class MainFrame extends JFrame {
 		this.add(northPanel, BorderLayout.NORTH);
 
 		JPanel formPanel = generateFormPanel();
+		console = new JTextArea();
 		JPanel consolePanel = generateConsole();
 
 		JPanel centerPanel = new JPanel(new BorderLayout());
@@ -46,14 +49,13 @@ public class MainFrame extends JFrame {
 	}
 
 	private JPanel generateConsole() {
-		JTextArea textArea = new JTextArea();
-		textArea.setEditable(false);
-		textArea.setWrapStyleWord(true);
-		textArea.setColumns(Constants.DEFAULT_TEXT_AREA_WIDTH);
-		textArea.setRows(Constants.DEFAULT_TEXT_FIELD_WIDTH);
+		this.console.setEditable(false);
+		this.console.setWrapStyleWord(true);
+		this.console.setColumns(Constants.DEFAULT_TEXT_AREA_WIDTH);
+		this.console.setRows(Constants.DEFAULT_TEXT_FIELD_WIDTH);
 
 		JPanel panel = new JPanel();
-		panel.add(new JScrollPane(textArea));
+		panel.add(new JScrollPane(this.console));
 		return panel;
 	}
 
@@ -82,16 +84,28 @@ public class MainFrame extends JFrame {
 		return targetPanel;
 	}
 
-	private void validateInputData(Collection<String> values) {
+	private void validateAndSubmitData(Collection<String> values) {
 		if (values.size() < Constants.LABEL_NAMES.length) {
-			throw new RuntimeException("Not all fields have been filled");
+			logEvent("ERROR: Fill all the fields!");
+			throw new RuntimeException();
 		}
 		values.forEach(str -> {
 			if ("".equals(str.trim())) {
-				throw new RuntimeException("NULL value at some field");
+				logEvent("ERROR: Some field is empty");
+				throw new RuntimeException();
 			}
 		});
-		System.out.println("Validation complete.");
+		logEvent("Validation complete.");
+		generateJessFile(values);
+	}
+
+	private void generateJessFile(Collection<String> values) {
+		logEvent("Jess file generated.");
+	}
+
+	private void logEvent(String text) {
+		this.console.append(text);
+		this.console.append("\n");
 	}
 
 	private class SubmitButtonAction implements ActionListener {
@@ -101,7 +115,7 @@ public class MainFrame extends JFrame {
 					.filter(jTextField -> !"".equals(jTextField.getText()))
 					.map(JTextField::getText)
 					.collect(Collectors.toList());
-			validateInputData(allTextFieldsValues);
+			validateAndSubmitData(allTextFieldsValues);
 		}
 	}
 
@@ -111,7 +125,7 @@ public class MainFrame extends JFrame {
 			String fileName = fileNameTextField.getText() + ".xml";
 			List<String> data = FileLoader.getInstance()
 					.parseXML(fileName.trim());
-			validateInputData(data);
+			validateAndSubmitData(data);
 		}
 	}
 
