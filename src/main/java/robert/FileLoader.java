@@ -6,7 +6,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,10 +53,10 @@ public class FileLoader {
 		factory.setNamespaceAware(true);
 
 		System.out.println("File name: " + fileName);
-		ClassLoader classLoader = getClass().getClassLoader();
-		File file = new File(classLoader.getResource(fileName).getFile());
+		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+		InputStream is = classloader.getResourceAsStream(fileName);
 		try {
-			return factory.newDocumentBuilder().parse(file);
+			return factory.newDocumentBuilder().parse(is);
 		} catch (Exception e) {
 			MainFrame.logEvent("ERROR: Could not load the file");
 			return null;

@@ -97,6 +97,7 @@ public class MainFrame extends JFrame {
 		values.forEach(MainFrame::logEvent);
 		// TODO - generation of jess file
 		logEvent("Jess file generated.");
+		logEvent("-------------------------------------");
 	}
 
 	public static void logEvent(String text) {
