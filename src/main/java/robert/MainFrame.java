@@ -85,7 +85,7 @@ public class MainFrame extends JFrame {
 
 	private void validateAndSubmitData(Collection<String> values) {
 		if (values.size() < Constants.LABEL_NAMES.length) {
-			logEvent("ERROR: Fill all the fields!");
+			logEvent("Error: Bad input data.");
 			throw new RuntimeException();
 		}
 		logEvent("Validation complete.");
@@ -93,7 +93,9 @@ public class MainFrame extends JFrame {
 	}
 
 	private void generateJessFile(Collection<String> values) {
-		// TODO
+		logEvent("Input values:");
+		values.forEach(MainFrame::logEvent);
+		// TODO - generation of jess file
 		logEvent("Jess file generated.");
 	}
 
@@ -109,6 +111,7 @@ public class MainFrame extends JFrame {
 					.filter(jTextField -> !"".equals(jTextField.getText()))
 					.map(JTextField::getText)
 					.collect(Collectors.toList());
+			logEvent("Data form form is loaded. Validating...");
 			validateAndSubmitData(allTextFieldsValues);
 		}
 	}
@@ -119,6 +122,7 @@ public class MainFrame extends JFrame {
 			String fileName = fileNameTextField.getText() + ".xml";
 			List<String> data = FileLoader.getInstance()
 					.parseXML(fileName.trim());
+			logEvent("XML parsed. Validating...");
 			validateAndSubmitData(data);
 		}
 	}
