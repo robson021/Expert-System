@@ -13,6 +13,8 @@ public class MainFrame extends JFrame {
 
 	private final List<JTextField> textFields = new LinkedList<>();
 
+	private final JTextField fileNameTextField;
+
 	private MainFrame() {
 		super("Expert System");
 		this.setLayout(new BorderLayout());
@@ -31,14 +33,15 @@ public class MainFrame extends JFrame {
 		this.add(centerPanel, BorderLayout.CENTER);
 
 		JPanel southPanel = new JPanel(flowLayout);
-		JButton submitFormButton = new JButton("Submit form");
 		JButton loadFromFileButton = new JButton("Load input from the file");
 
-		submitFormButton.addActionListener(new SubmitButtonAction());
 		loadFromFileButton.addActionListener(new LoadFormFileButtonAction());
-
-		southPanel.add(submitFormButton);
 		southPanel.add(loadFromFileButton);
+
+		fileNameTextField = new JTextField(Constants.DEFAULT_TEXT_FIELD_WIDTH * 2 / 3);
+		southPanel.add(fileNameTextField);
+		southPanel.add(new JLabel(".xml"));
+
 		this.add(southPanel, BorderLayout.SOUTH);
 	}
 
@@ -72,6 +75,10 @@ public class MainFrame extends JFrame {
 			gbc.gridx = 0;
 			gbc.gridy++;
 		}
+		JButton submitFormButton = new JButton("Submit form");
+		submitFormButton.addActionListener(new SubmitButtonAction());
+		gbc.gridx++;
+		targetPanel.add(submitFormButton, gbc);
 		return targetPanel;
 	}
 
@@ -101,7 +108,9 @@ public class MainFrame extends JFrame {
 	private class LoadFormFileButtonAction implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			List<String> data = FileLoader.getInstance().loadDataFromTheFile();
+			String fileName = fileNameTextField.getText() + ".xml";
+			List<String> data = FileLoader.getInstance()
+					.parseXML(fileName.trim());
 			validateInputData(data);
 		}
 	}
