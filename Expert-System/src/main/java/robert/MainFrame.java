@@ -1,11 +1,13 @@
 package robert;
 
-import robert.enums.InputLabels;
-
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainFrame extends JFrame {
 
@@ -17,20 +19,23 @@ public class MainFrame extends JFrame {
 		final FlowLayout flowLayout = new FlowLayout();
 
 		JPanel northPanel = new JPanel(flowLayout);
-		northPanel.add(new JLabel("Enter the rules via form or load them with XML file."));
+		northPanel.add(new JLabel("Enter the facts via form below or load them from XML file."));
 		this.add(northPanel, BorderLayout.NORTH);
 
 		JPanel formPanel = generateFormPanel();
 		JPanel consolePanel = generateConsole();
 
-		JPanel centerPanel = new JPanel(new GridLayout(2, 1));
-		centerPanel.add(formPanel);
-		centerPanel.add(consolePanel);
+		JPanel centerPanel = new JPanel(new BorderLayout());
+		centerPanel.add(formPanel, BorderLayout.NORTH);
+		centerPanel.add(consolePanel, BorderLayout.CENTER);
 		this.add(centerPanel, BorderLayout.CENTER);
 
 		JPanel southPanel = new JPanel(flowLayout);
 		JButton submitFormButton = new JButton("Submit form");
 		JButton loadFromFileButton = new JButton("Load input from the file");
+
+		submitFormButton.addActionListener(new SubmitButtonAction());
+		loadFromFileButton.addActionListener(new LoadFormFileButtonAction());
 
 		southPanel.add(submitFormButton);
 		southPanel.add(loadFromFileButton);
@@ -41,8 +46,8 @@ public class MainFrame extends JFrame {
 		JTextArea textArea = new JTextArea();
 		textArea.setEditable(false);
 		textArea.setWrapStyleWord(true);
-		textArea.setColumns(InputLabels.DEFAULT_TEXT_FIELD_WITH * 4);
-		textArea.setRows(InputLabels.DEFAULT_TEXT_FIELD_WITH);
+		textArea.setColumns(Constants.DEFAULT_TEXT_AREA_WIDTH);
+		textArea.setRows(Constants.DEFAULT_TEXT_FIELD_WIDTH);
 
 		JPanel panel = new JPanel();
 		panel.add(new JScrollPane(textArea));
@@ -50,34 +55,66 @@ public class MainFrame extends JFrame {
 	}
 
 	private JPanel generateFormPanel() {
-		int numOfLabels = InputLabels.LABEL_NAMES.length;
-		JPanel targetPanel = new JPanel(new GridLayout(numOfLabels, 2));
+		JPanel targetPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		int insets = 7;
+		gbc.insets = new Insets(insets, insets, insets, insets);
+		gbc.gridx = gbc.gridy = 0;
 
-		for (String labelName : InputLabels.LABEL_NAMES) {
-			JTextField textField = new JTextField(InputLabels.DEFAULT_TEXT_FIELD_WITH);
+		for (String labelName : Constants.LABEL_NAMES) {
+			JTextField textField = new JTextField(Constants.DEFAULT_TEXT_FIELD_WIDTH);
 			this.textFields.add(textField);
-			JPanel tmpPanel = new JPanel(new FlowLayout());
-			tmpPanel.add(new JLabel(labelName));
-			targetPanel.add(tmpPanel);
-			tmpPanel = new JPanel(new FlowLayout());
-			tmpPanel.add(textField);
-			targetPanel.add(tmpPanel);
+
+			targetPanel.add(new JLabel(labelName), gbc);
+			gbc.gridx++;
+			targetPanel.add(textField, gbc);
+
+			gbc.gridx = 0;
+			gbc.gridy++;
 		}
 		return targetPanel;
 	}
 
-	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				JFrame frame = new MainFrame();
-				frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-				frame.setMinimumSize(new Dimension(300, 300));
-				frame.setLocationRelativeTo(null);
-				frame.setResizable(false);
-				frame.pack();
-				frame.setVisible(true);
-				System.out.println("Frame initiated.");
+	private void validateInputData(Collection<String> values) {
+		if (values.size() < Constants.LABEL_NAMES.length) {
+			throw new RuntimeException("Not all fields have been filled");
+		}
+		values.forEach(str -> {
+			if ("".equals(str.trim())) {
+				throw new RuntimeException("NULL value at some field");
 			}
+		});
+		System.out.println("Validation complete.");
+	}
+
+	private class SubmitButtonAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			List<String> allTextFieldsValues = textFields.stream()
+					.filter(jTextField -> !"".equals(jTextField.getText()))
+					.map(JTextField::getText)
+					.collect(Collectors.toList());
+			validateInputData(allTextFieldsValues);
+		}
+	}
+
+	private class LoadFormFileButtonAction implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			List<String> data = FileLoader.getInstance().loadDataFromTheFile();
+			validateInputData(data);
+		}
+	}
+
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(() -> {
+			JFrame frame = new MainFrame();
+			frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+			frame.setResizable(false);
+			frame.pack();
+			frame.setLocationRelativeTo(null);
+			frame.setVisible(true);
+			System.out.println("Frame initiated.");
 		});
 	}
 }
