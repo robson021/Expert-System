@@ -29,7 +29,7 @@ public class FileLoader {
 		doc.getDocumentElement().normalize();
 		System.out.println("Doc is normalized now.");
 		System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-		NodeList nList = doc.getElementsByTagName("rule");
+		NodeList nList = doc.getElementsByTagName("fact");
 		List<String> list = new LinkedList<>();
 		for (int i = 0; i < nList.getLength(); i++) {
 			Node nNode = nList.item(i);

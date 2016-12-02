@@ -27,7 +27,7 @@ public class MainFrame extends JFrame {
 		this.add(northPanel, BorderLayout.NORTH);
 
 		JPanel formPanel = generateFormPanel();
-		JPanel consolePanel = generateConsole();
+		JPanel consolePanel = setUpConsole();
 
 		JPanel centerPanel = new JPanel(new BorderLayout());
 		centerPanel.add(formPanel, BorderLayout.NORTH);
@@ -47,7 +47,7 @@ public class MainFrame extends JFrame {
 		this.add(southPanel, BorderLayout.SOUTH);
 	}
 
-	private JPanel generateConsole() {
+	private JPanel setUpConsole() {
 		console.setEditable(false);
 		console.setWrapStyleWord(true);
 		console.setColumns(Constants.DEFAULT_TEXT_AREA_WIDTH);

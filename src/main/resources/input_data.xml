@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 
-<rules>
-	<rule id="1">
-		<value>rule 1</value>
-	</rule>
-	<rule id="2">
-		<value>rule 2</value>
-	</rule>
-	<rule id="3">
-		<value>rule 3</value>
-	</rule>
+<facts>
+	<fact id="1">
+		<value>fact 1</value>
+	</fact>
+	<fact id="2">
+		<value>fact 2</value>
+	</fact>
+	<fact id="3">
+		<value>fact 3</value>
+	</fact>
 
-</rules>
+</facts>
