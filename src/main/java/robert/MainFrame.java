@@ -23,6 +23,7 @@ public class MainFrame extends JFrame {
 		final FlowLayout flowLayout = new FlowLayout();
 
 		JPanel northPanel = new JPanel(flowLayout);
+		northPanel.setBackground(Color.CYAN);
 		northPanel.add(new JLabel("Enter the facts via form below or load them from XML file."));
 		this.add(northPanel, BorderLayout.NORTH);
 
@@ -40,10 +41,11 @@ public class MainFrame extends JFrame {
 		loadFromFileButton.addActionListener(new LoadFormFileButtonAction());
 		southPanel.add(loadFromFileButton);
 
-		fileNameTextField = new JTextField(Constants.DEFAULT_TEXT_FIELD_WIDTH * 2 / 3);
+		fileNameTextField = new JTextField(Constants.DEFAULT_TEXT_FIELD_WIDTH * 2);
 		southPanel.add(fileNameTextField);
 		southPanel.add(new JLabel(".xml"));
 
+		southPanel.setBackground(Color.ORANGE.darker());
 		this.add(southPanel, BorderLayout.SOUTH);
 	}
 
@@ -51,7 +53,7 @@ public class MainFrame extends JFrame {
 		console.setEditable(false);
 		console.setWrapStyleWord(true);
 		console.setColumns(Constants.DEFAULT_TEXT_AREA_WIDTH);
-		console.setRows(Constants.DEFAULT_TEXT_FIELD_WIDTH);
+		console.setRows(Constants.DEFAULT_TEXT_FIELD_WIDTH * 2);
 
 		JPanel panel = new JPanel();
 		panel.add(new JScrollPane(console));
@@ -85,7 +87,7 @@ public class MainFrame extends JFrame {
 
 	private void validateAndSubmitData(Collection<String> values) {
 		if (values.size() < Constants.LABEL_NAMES.length) {
-			logEvent("Error: Bad input data.");
+			logEvent("Error: Bad input data. Not enough values.");
 			throw new RuntimeException();
 		}
 		logEvent("Validation complete.");
@@ -93,8 +95,9 @@ public class MainFrame extends JFrame {
 	}
 
 	private void generateJessFile(Collection<String> values) {
-		logEvent("Input values:");
-		values.forEach(MainFrame::logEvent);
+		logEvent("\tInput values:");
+		final int[] i = {1};
+		values.forEach(value -> logEvent(i[0]++ + ")  " + value));
 		// TODO - generation of jess file
 		logEvent("Jess file generated.");
 		logEvent("-------------------------------------");
@@ -112,7 +115,7 @@ public class MainFrame extends JFrame {
 					.filter(jTextField -> !"".equals(jTextField.getText()))
 					.map(JTextField::getText)
 					.collect(Collectors.toList());
-			logEvent("Data form form is loaded. Validating...");
+			logEvent("Form data is loaded. Validating...");
 			validateAndSubmitData(allTextFieldsValues);
 		}
 	}

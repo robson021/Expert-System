@@ -12,9 +12,12 @@ import java.util.List;
 
 public class FileLoader {
 
-	private static final FileLoader self = new FileLoader();
+	private static final FileLoader singleton = new FileLoader();
 
 	private static final String DEFAULT_FILE = "input_data.xml";
+
+	private FileLoader() {
+	}
 
 	public List<String> parseXML(String fileName) {
 		fileName = fileName.trim();
@@ -28,35 +31,35 @@ public class FileLoader {
 	private List<String> parseDocument(Document doc) {
 		doc.getDocumentElement().normalize();
 		System.out.println("Doc is normalized now.");
-		System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+		System.out.println("Root element: " + doc.getDocumentElement().getNodeName());
 		NodeList nList = doc.getElementsByTagName("fact");
 		List<String> list = new LinkedList<>();
 		for (int i = 0; i < nList.getLength(); i++) {
 			Node nNode = nList.item(i);
 			if (nNode.getNodeType() != Node.ELEMENT_NODE) continue;
 			Element eElement = (Element) nNode;
-			String value = eElement.getElementsByTagName("value").item(0).getTextContent();
+			String value = eElement.getElementsByTagName("value")
+					.item(0)
+					.getTextContent();
 			list.add(value);
 		}
 		return list;
 	}
 
 	public static FileLoader getInstance() {
-		return self;
+		return singleton;
 	}
 
 	private Document loadDocument(String fileName) {
-		/*String filePath = Paths.get("resources", fileName).toString();
-		MainFrame.logEvent("File path:\t" + filePath);*/
-
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setNamespaceAware(true);
-
 		System.out.println("File name: " + fileName);
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 		InputStream is = classloader.getResourceAsStream(fileName);
+
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setNamespaceAware(true);
 		try {
-			return factory.newDocumentBuilder().parse(is);
+			return factory.newDocumentBuilder()
+					.parse(is);
 		} catch (Exception e) {
 			MainFrame.logEvent("ERROR: Could not load the file");
 			return null;

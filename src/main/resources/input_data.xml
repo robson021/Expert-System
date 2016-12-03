@@ -1,14 +1,22 @@
 <?xml version="1.0"?>
 
 <facts>
-	<fact id="1">
-		<value>fact 1</value>
+	<fact id="1"> <!--London - Warsaw-->
+		<value>1500</value>
 	</fact>
 	<fact id="2">
-		<value>fact 2</value>
+		<value>20</value>
 	</fact>
-	<fact id="3">
-		<value>fact 3</value>
+	<fact id="3"> <!--Boeing 737 avg speed-->
+		<value>780</value>
 	</fact>
-
+	<fact id="4">
+		<value>normal</value>
+	</fact>
+	<fact id="5">
+		<value>good</value>
+	</fact>
+	<fact id="6">
+		<value>150</value>
+	</fact>
 </facts>
