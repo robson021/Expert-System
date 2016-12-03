@@ -96,14 +96,25 @@ public class MainFrame extends JFrame {
 			throw new RuntimeException();
 		}
 		logEvent("Validation complete.");
-		generateJessFile(values);
+		try {
+			generateJessFile(values);
+		} catch (Exception e) {
+			logEvent("ERROR: Could not generate the Jess file...");
+			e.printStackTrace();
+			return;
+		}
+		JessRunner.getInstance()
+				.runJess();
 	}
 
-	private void generateJessFile(Collection<String> values) {
+	private void generateJessFile(Collection<String> values) throws Exception {
 		logEvent("\n\tInput values:");
 		final int[] i = {1};
 		values.forEach(value -> logEvent(i[0]++ + ")  " + value));
-		// TODO - generation of jess file
+
+		FileSaver.getInstance()
+				.saveInputDataToClpFile(values);
+
 		logEvent("Jess file generated.");
 		logEvent("-------------------------------------");
 	}

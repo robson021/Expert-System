@@ -6,8 +6,17 @@ public interface Constants {
 			"Crew experience (years)",
 			"Available average flight speed (km/h)",
 			"Weather condition (poor/normal/good)",
-			"Airport preparation, runway (poor/normal/good)",
+			"Airport preparation, runway condition (poor/normal/good)",
 			"Number of passengers (latecomer probability)"
+	};
+
+	String[] CLP_VARIABLES = new String[]{
+			"(defglobal ?*distance* = %s )",
+			"(defglobal ?*crew* = %s )",
+			"(defglobal ?*speed* = %s )",
+			"(defglobal ?*weather* = %s )",
+			"(defglobal ?*airport* = %s )",
+			"(defglobal ?*latecomers* = %s )"
 	};
 
 	short DEFAULT_TEXT_FIELD_WIDTH = 7;
