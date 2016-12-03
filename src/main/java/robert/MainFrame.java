@@ -88,6 +88,7 @@ public class MainFrame extends JFrame {
 	private void validateAndSubmitData(Collection<String> values) {
 		values = values.stream()
 				.map(v -> v.trim().toLowerCase())
+				.filter(v -> !"".equals(v))
 				.collect(Collectors.toList());
 
 		if (values.size() < Constants.LABEL_NAMES.length) {
@@ -116,7 +117,6 @@ public class MainFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			List<String> allTextFieldsValues = textFields.stream()
-					.filter(jTextField -> !"".equals(jTextField.getText()))
 					.map(JTextField::getText)
 					.collect(Collectors.toList());
 			logEvent("Form data is loaded. Validating...");
