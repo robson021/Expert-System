@@ -16,7 +16,7 @@ public interface Constants {
 			"(defglobal ?*speed* = %s )",
 			"(defglobal ?*weather* = %s )",
 			"(defglobal ?*airport* = %s )",
-			"(defglobal ?*latecomers* = %s )"
+			"(defglobal ?*passengers* = %s )"
 	};
 
 	short DEFAULT_TEXT_FIELD_WIDTH = 7;

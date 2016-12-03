@@ -18,7 +18,7 @@ public class JessRunner {
 	public void runJess() throws Exception {
 		// TODO
 		Process process = new ProcessBuilder(
-				"jess.bat", "facts.clp")
+				"/home/robert/git/expertsystem/jess.bat", "/home/robert/git/expertsystem/facts.clp")
 				.start();
 		InputStream is = process.getInputStream();
 		InputStreamReader isr = new InputStreamReader(is);
@@ -28,5 +28,6 @@ public class JessRunner {
 		while ((line = br.readLine()) != null) {
 			System.out.println(line);
 		}
+		System.out.println("End of jess process.");
 	}
 }
