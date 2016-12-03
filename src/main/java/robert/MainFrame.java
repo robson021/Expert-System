@@ -86,6 +86,10 @@ public class MainFrame extends JFrame {
 	}
 
 	private void validateAndSubmitData(Collection<String> values) {
+		values = values.stream()
+				.map(v -> v.trim().toLowerCase())
+				.collect(Collectors.toList());
+
 		if (values.size() < Constants.LABEL_NAMES.length) {
 			logEvent("Error: Bad input data. Not enough values.");
 			throw new RuntimeException();
@@ -95,7 +99,7 @@ public class MainFrame extends JFrame {
 	}
 
 	private void generateJessFile(Collection<String> values) {
-		logEvent("\tInput values:");
+		logEvent("\n\tInput values:");
 		final int[] i = {1};
 		values.forEach(value -> logEvent(i[0]++ + ")  " + value));
 		// TODO - generation of jess file
