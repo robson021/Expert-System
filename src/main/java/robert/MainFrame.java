@@ -99,12 +99,17 @@ public class MainFrame extends JFrame {
 		try {
 			generateJessFile(values);
 		} catch (Exception e) {
-			logEvent("ERROR: Could not generate the Jess file...");
+			logEvent("ERROR: Could not generate the Jess file.");
 			e.printStackTrace();
 			return;
 		}
-		JessRunner.getInstance()
-				.runJess();
+		try {
+			JessRunner.getInstance()
+					.runJess();
+		} catch (Exception e) {
+			logEvent("ERROR: Could not run Jess.");
+			e.printStackTrace();
+		}
 	}
 
 	private void generateJessFile(Collection<String> values) throws Exception {
