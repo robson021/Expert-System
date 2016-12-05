@@ -18,13 +18,15 @@ public class JessRunner {
 
     public void runJess() throws Exception {
 
-        String facts = Paths.get("resources", "bin", "facts.clp").toAbsolutePath().toString();
-        String bat = Paths.get("resources", "bin", "jess.bat").toAbsolutePath().toString();
+        String facts = Paths.get("jess", "bin", "facts.clp").toAbsolutePath().toString();
+        String bat = Paths.get("jess", "bin", "jess.bat").toAbsolutePath().toString();
 
         Process process = new ProcessBuilder(bat, facts)
                 .start();
+
         InputStream is = process.getInputStream();
         InputStreamReader isr = new InputStreamReader(is);
+
         BufferedReader br = new BufferedReader(isr);
 
         MainFrame.logEvent("\tOUTPUT:");

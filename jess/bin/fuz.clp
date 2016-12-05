@@ -52,7 +52,7 @@
 (?*OpoznienieLotu* addTerm "brak" (new TriangleFuzzySet 0.0 0.2 0.5))
 (?*OpoznienieLotu* addTerm "male" (new TriangleFuzzySet  0.3 1.0 1.5 ))
 (?*OpoznienieLotu* addTerm "srednie" (new TriangleFuzzySet 1.4 5.0 7.0 ))
-(?*OpoznienieLotu* addTerm "duze" (new TriangleFuzzySet 6.3 8.0 10.0))
+(?*OpoznienieLotu* addTerm "duze" (new TriangleFuzzySet 6.7 8.0 10.0))
 
 
 (printout file "" crlf)
