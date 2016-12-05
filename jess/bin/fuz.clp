@@ -8,7 +8,6 @@
 (batch facts.clp)
 
 
-;;deklaracja zmiennych rozmytych
 (defglobal ?*Dystans* = (new FuzzyVariable "dystans" 100.0 3000.0 "km"))
 (defglobal ?*MaxPredkosc* = (new FuzzyVariable "max_predkosc" 0.0 1000.0 "km/h"))
 (defglobal ?*Pogoda* = (new FuzzyVariable "pogoda" -1.0 1.0 "pogoda"))
@@ -18,7 +17,6 @@
 (defglobal ?*result* = 0)
 
 
-;;regula startowa inicjujaca proces wnioskowania rozmytego
 (defrule init 
  (declare (salience 100))
 =>
@@ -27,14 +25,11 @@
 
 (bind ?rlf (new RightLinearFunction)) (bind ?llf (new LeftLinearFunction))
     
-	
-;; rozmywanie na przedzialy kazdej zmiennej
+
 ;;dystans
 (?*Dystans* addTerm "maly" (new TrapezoidFuzzySet 100.0 300.0 500.0 600.0))
 (?*Dystans* addTerm "sredni" (new TrapezoidFuzzySet 550.0 800.0 1400.0 2000.0))
 (?*Dystans* addTerm "duzy" (new TrapezoidFuzzySet 1700.0 2000.0 2500.0 3000.0))
-
-
 
 ;; Predkosc samolotu
 (?*MaxPredkosc* addTerm "niska" (new TrapezoidFuzzySet 300.0 320.0 370.0 400.5))
@@ -61,9 +56,6 @@
 (printout file "Flight delays in hours" crlf) 
 (printout file "" crlf)
 
- 
-
-;;po wczytaniu z pliku dane wejsciowe zapisywane sa do odpowiedniej formy faktu w celu przeprowadzenia procesu wnioskowania
 ;; dystans lotu
 (assert (crispDyst_Lotu ?*distance*))
 (assert (DystLotu (new FuzzyValue ?*Dystans* (new TrapezoidFuzzySet ?*distance* ?*distance* ?*distance* ?*distance*))))
@@ -385,8 +377,6 @@
    
     (bind ?crispOpoznienie_Lotu (?fuzzyOpoznienieL momentDefuzzify))
     
-    
-	;;wyswietlanie wynikow wnioskowania w konsoli
     (printout file "" crlf)
     (printout file "Distance = " ?dst " , speed  = " ?mpr  ", weather condition = " ?pgd crlf)
     
@@ -396,14 +386,10 @@
     (bind ?zmienna1 (* ?crispOpoznienie_Lotu 1))
     
     
-       
-    ;;zaokraglanie wynikow do 2 miejsc po przecinku
    (bind ?aaa (round  (* ?zmienna1 100)))
     
    (bind ?aaaa (/ ?aaa 100))
    
-    
-	;;wyswietlanie wynikow w formie procentowej - do 100%
     (printout file "" crlf)
     
     (printout file "Delay  : " ?aaaa " hours "crlf)  
@@ -412,10 +398,6 @@
     
     )
 
-
-	
-	
-;;zaladowanie faktow do pamieci roboczej jess i uruchomienie mechanizmu wnioskowania	
 (reset)
 (run)
 

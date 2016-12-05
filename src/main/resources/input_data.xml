@@ -7,7 +7,7 @@
 	<fact id="2"> <!--Boeing 737 avg speed-->
 		<value>780</value>
 	</fact>
-	<fact id="3">
+    <fact id="3"> <!--Weather condition-->
 		<value>0.7</value>
 	</fact>
 </facts>

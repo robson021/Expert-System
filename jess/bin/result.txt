@@ -4,6 +4,6 @@ Expert System for aviation industry
 Flight delays in hours
 
 
-Distance = 1700 , speed  = 780, weather condition = 0.7
+Distance = 1100 , speed  = 500, weather condition = 0.2
 
-Delay  : 0.24 hours 
+Delay  : 0.92 hours 
