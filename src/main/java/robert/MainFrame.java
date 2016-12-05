@@ -78,8 +78,14 @@ public class MainFrame extends JFrame {
 			gbc.gridx = 0;
 			gbc.gridy++;
 		}
-		JButton submitFormButton = new JButton("Submit form");
-		submitFormButton.addActionListener(new SubmitButtonAction());
+
+        JButton loadLastJess = new JButton("Load last Jess output");
+        loadLastJess.setBackground(Color.GREEN.darker());
+        loadLastJess.addActionListener(new LoadLastJessOutputButtonAction());
+        targetPanel.add(loadLastJess, gbc);
+
+        JButton submitFormButton = new JButton("Submit form");
+        submitFormButton.addActionListener(new SubmitButtonAction());
 		gbc.gridx++;
 		targetPanel.add(submitFormButton, gbc);
 		return targetPanel;
@@ -150,6 +156,17 @@ public class MainFrame extends JFrame {
 			validateAndSubmitData(data);
 		}
 	}
+
+    private class LoadLastJessOutputButtonAction implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            List<String> resultList = FileLoader.getInstance()
+                    .loadLastResult();
+            for (String line : resultList) {
+                logEvent(line);
+            }
+        }
+    }
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> {

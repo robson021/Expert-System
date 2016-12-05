@@ -12,7 +12,7 @@ public class FileSaver {
 
 	private static final FileSaver singleton = new FileSaver();
 
-	private static final File file = new File(Paths.get("facts.clp").toUri());
+	private static final File file = new File(Paths.get("jess", "bin", "facts.clp").toUri());
 
 	private FileSaver() {
 	}

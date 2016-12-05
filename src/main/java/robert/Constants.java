@@ -2,10 +2,10 @@ package robert;
 
 public interface Constants {
 	String[] LABEL_NAMES = new String[]{
-            "Distance of route (0 - 5000km)",
+            "Distance of route (0 - 3000km)",
             //"Crew experience (years)",
-            "Available average flight speed (100 - 1000km/h)",
-            "Weather condition (-2.0  -  2.0)"
+            "Available average flight speed (300 - 1000km/h)",
+            "Weather condition (-1.0  -  1.0)"
             //"Airport preparation, runway condition (poor/normal/good)",
             //"Number of passengers (latecomer probability)"
     };

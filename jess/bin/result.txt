@@ -1,0 +1,9 @@
+
+Expert System for aviation industry 
+
+Flight delays in hours
+
+
+Distance = 2200 , speed  = 780, weather condition = 0.5
+
+Delay  : 0.23 hours 
